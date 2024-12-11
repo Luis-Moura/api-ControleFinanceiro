@@ -25,7 +25,7 @@ export default async function routes(fastify: FastifyInstance) {
   fastify.get(
     '/transaction/:id',
     async (request: FastifyRequest, reply: FastifyReply) => {
-      transactionsController.getTransactionById(request, reply);
+      await transactionsController.getTransactionById(request, reply);
     }
   );
 
@@ -46,14 +46,14 @@ export default async function routes(fastify: FastifyInstance) {
   fastify.get(
     '/balance',
     async (request: FastifyRequest, reply: FastifyReply) => {
-      transactionsController.getBalance(request, reply);
+      await transactionsController.getBalance(request, reply);
     }
   );
 
   fastify.get(
     '/report',
     async (request: FastifyRequest, reply: FastifyReply) => {
-      transactionsController.getReport(request, reply);
+      await transactionsController.getReport(request, reply);
     }
   );
 }

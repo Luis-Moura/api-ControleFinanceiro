@@ -38,7 +38,17 @@ export async function getTransactionById(
 ) {
   const { id } = request.params as { id: string };
   const transactionId = Number(id);
-  reply.status(200).send({ message: `Transaction ${transactionId} retrieved` });
+
+  const response = await transactionService.getTransactionById(transactionId);
+
+  if (!response) {
+    console.log(`Transaction ${transactionId} not found`);
+    return reply
+      .status(404)
+      .send({ message: `Transaction ${transactionId} not found` });
+  }
+
+  reply.status(200).send(response);
 }
 
 export async function updateTransactionById(

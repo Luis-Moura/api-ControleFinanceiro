@@ -38,3 +38,17 @@ export async function getTransactions(): Promise<Transaction[] | null> {
     throw error;
   }
 }
+
+export async function getTransactionById(
+  id: number
+): Promise<Transaction | null> {
+  const transaction = await prisma.transaction.findUnique({
+    where: { id },
+  });
+
+  if (!transaction) {
+    return null;
+  }
+
+  return transaction;
+}
