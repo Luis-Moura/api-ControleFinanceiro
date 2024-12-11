@@ -5,6 +5,7 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/server.js",
+    "dev": "ts-node src/server.ts",
     "docker:build": "docker-compose build",
     "docker:up": "docker-compose up"
   },
