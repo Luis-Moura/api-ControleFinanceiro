@@ -13,6 +13,7 @@ services:
       - .:/app
       - /app/node_modules
     working_dir: /app
+    command: sh -c "npx prisma migrate deploy && npm run start"
   db:
     image: postgres:13
     environment:
