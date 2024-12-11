@@ -10,14 +10,15 @@ export default async function routes(fastify: FastifyInstance) {
   fastify.post(
     '/transaction',
     async (request: FastifyRequest, reply: FastifyReply) => {
-      transactionsController.postTransaction(request, reply);
+      console.log('Handling POST /transaction');
+      await transactionsController.postTransaction(request, reply);
     }
   );
 
   fastify.get(
     '/transactions',
     async (request: FastifyRequest, reply: FastifyReply) => {
-      transactionsController.getTransactions(request, reply);
+      await transactionsController.getTransactions(request, reply);
     }
   );
 
