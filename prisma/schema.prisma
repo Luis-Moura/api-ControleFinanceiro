@@ -6,3 +6,19 @@ datasource db {
 generator client {
   provider = "prisma-client-js"
 }
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+}
+
+model Transaction {
+  id                  Int @id @default(autoincrement())
+  description         String
+  amount              Int
+  category            String
+  transaction_type    TransactionType
+  date                DateTime
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}
