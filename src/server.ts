@@ -1,6 +1,6 @@
 import Fastify from 'fastify';
 import prismaPlugin from './plugins/prisma';
-import routes from './routes/index';
+import routes from './routes';
 
 const server = Fastify();
 
