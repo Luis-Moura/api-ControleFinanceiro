@@ -1,6 +1,9 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import { pingPong } from '../controllers/pingPong';
 import * as transactionsController from '../controllers/transactions.controller';
+import { validateDto } from '../middlewares/validation.middleware';
+import { PostTransactionDto } from '../dtos/postTransaction.dto';
+import { UpdateTransactionDto } from '../dtos/updateTransaction.dto';
 
 export default async function routes(fastify: FastifyInstance) {
   fastify.get('/ping', async (request: FastifyRequest, reply: FastifyReply) => {
@@ -9,6 +12,7 @@ export default async function routes(fastify: FastifyInstance) {
 
   fastify.post(
     '/transaction',
+    { preHandler: validateDto(PostTransactionDto) },
     async (request: FastifyRequest, reply: FastifyReply) => {
       await transactionsController.postTransaction(request, reply);
     }
@@ -30,6 +34,7 @@ export default async function routes(fastify: FastifyInstance) {
 
   fastify.patch(
     '/transaction/:id',
+    { preHandler: validateDto(UpdateTransactionDto) },
     async (request: FastifyRequest, reply: FastifyReply) => {
       await transactionsController.updateTransactionById(request, reply);
     }
