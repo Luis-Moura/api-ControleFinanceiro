@@ -1,6 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
-import * as transactionService from '../services/transaction';
+import * as transactionService from '../services/transaction.service';
 import { PostTransactionDto } from '../dtos/postTransaction.dto';
+import { UpdateTransactionDto } from '../dtos/updateTransaction.dto';
 
 export async function postTransaction(
   request: FastifyRequest,
@@ -57,7 +58,21 @@ export async function updateTransactionById(
 ) {
   const { id } = request.params as { id: string };
   const transactionId = Number(id);
-  reply.status(200).send({ message: `Transaction ${transactionId} updated` });
+  const updateTransactionDto = request.body as UpdateTransactionDto;
+
+  const response = await transactionService.updateTransactionById(
+    transactionId,
+    updateTransactionDto
+  );
+
+  if (!response) {
+    console.log(`Transaction ${transactionId} not found`);
+    return reply
+      .status(404)
+      .send({ message: `Transaction ${transactionId} not found` });
+  }
+
+  reply.status(200).send(response);
 }
 
 export async function deleteTransactionById(
@@ -66,7 +81,19 @@ export async function deleteTransactionById(
 ) {
   const { id } = request.params as { id: string };
   const transactionId = Number(id);
-  reply.status(200).send({ message: `Transaction ${transactionId} deleted` });
+
+  const response = await transactionService.deleteTransactionById(
+    transactionId
+  );
+
+  if (!response) {
+    console.log(`Transaction ${transactionId} not found`);
+    return reply
+      .status(404)
+      .send({ message: `Transaction ${transactionId} not found` });
+  }
+
+  reply.status(200).send({ message: 'Transaction deleted' });
 }
 
 export async function getBalance(request: FastifyRequest, reply: FastifyReply) {

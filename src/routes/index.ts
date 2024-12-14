@@ -1,6 +1,6 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import { pingPong } from '../controllers/pingPong';
-import * as transactionsController from '../controllers/transactions';
+import * as transactionsController from '../controllers/transactions.controller';
 
 export default async function routes(fastify: FastifyInstance) {
   fastify.get('/ping', async (request: FastifyRequest, reply: FastifyReply) => {
@@ -10,7 +10,6 @@ export default async function routes(fastify: FastifyInstance) {
   fastify.post(
     '/transaction',
     async (request: FastifyRequest, reply: FastifyReply) => {
-      console.log('Handling POST /transaction');
       await transactionsController.postTransaction(request, reply);
     }
   );
@@ -29,17 +28,17 @@ export default async function routes(fastify: FastifyInstance) {
     }
   );
 
-  fastify.put(
+  fastify.patch(
     '/transaction/:id',
     async (request: FastifyRequest, reply: FastifyReply) => {
-      transactionsController.updateTransactionById(request, reply);
+      await transactionsController.updateTransactionById(request, reply);
     }
   );
 
   fastify.delete(
     '/transaction/:id',
     async (request: FastifyRequest, reply: FastifyReply) => {
-      transactionsController.deleteTransactionById(request, reply);
+      await transactionsController.deleteTransactionById(request, reply);
     }
   );
 

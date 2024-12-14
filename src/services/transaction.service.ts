@@ -1,6 +1,7 @@
 import { Transaction } from '@prisma/client';
 import { prisma } from '../plugins/prisma';
 import { PostTransactionDto } from '../dtos/postTransaction.dto';
+import { UpdateTransactionDto } from '../dtos/updateTransaction.dto';
 
 export async function postTransaction(
   postTransactionDto: PostTransactionDto
@@ -51,4 +52,50 @@ export async function getTransactionById(
   }
 
   return transaction;
+}
+
+export async function updateTransactionById(
+  id: number,
+  updateTransactionDto: UpdateTransactionDto
+): Promise<Transaction | null> {
+  try {
+    const transaction = await prisma.transaction.findUnique({
+      where: { id },
+    });
+
+    if (!transaction) {
+      return null;
+    }
+
+    await prisma.transaction.update({
+      where: { id },
+      data: updateTransactionDto,
+    });
+
+    return transaction;
+  } catch (error) {
+    console.error('Error updating transaction:', error);
+    throw error;
+  }
+}
+
+export async function deleteTransactionById(id: number): Promise<boolean> {
+  try {
+    const transaction = await prisma.transaction.findUnique({
+      where: { id },
+    });
+
+    if (!transaction) {
+      return false;
+    }
+
+    await prisma.transaction.delete({
+      where: { id },
+    });
+
+    return true;
+  } catch (error) {
+    console.error('Error deleting transaction:', error);
+    throw error;
+  }
 }
